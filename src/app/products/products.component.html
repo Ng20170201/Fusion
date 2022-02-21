@@ -1,0 +1,10 @@
+<div >
+<select  [(ngModel)]="shopItem" (change)="selectShop($event)">
+    <option  *ngFor="let shop of shops" [value]="shop.Id"> {{shop.Name}}</option>
+</select>
+
+<select *ngIf="products">
+    <option *ngFor="let product of products"  > {{product.Name}}</option>
+</select>
+
+</div>

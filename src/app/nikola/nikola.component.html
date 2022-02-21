@@ -1,0 +1,26 @@
+
+<app-widget valuePage="nik" (Event1)="napisi($event)" > </app-widget>
+<p>
+  
+Broj klikova na Nikola :{{br}}
+</p>
+
+
+<table >
+    <tbody  >
+    <tr>
+        <th> Number </th>
+        <th> Name </th>
+        <th> Price </th>
+    </tr>
+   
+    <tr  #items  *ngFor="let cC of data3" >
+       
+        <th>{{cC.id}}</th>
+        <th>{{cC.name}}</th>
+        <th>{{cC.price}}</th>
+    
+    </tr>
+
+</tbody>
+</table>

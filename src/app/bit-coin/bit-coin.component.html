@@ -1,0 +1,20 @@
+<button class="btn btn-success" *ngIf="!press1" (click)="getData()"   >Nadji cenu bitcoina</button>
+<button  class="btn btn-danger"  *ngIf="!press2" (click)="stopReload()">Ugasi pretragu</button>
+
+<div  class="container" *ngFor="let cryptoPrice of cryptoPrices" > 
+  
+  <img [src]="cryptoPrice.icon"/>
+   Name: {{cryptoPrice.name}} Price: {{cryptoPrice.price}}
+
+</div>
+
+
+
+<app-widget valuePage="bit" (Event1)="napisi($event)"></app-widget>
+<p>
+  Broj klikova na Bit :{{br}}
+</p>
+
+<button (click)="nadjiUserClient()">Nadji Username i Clientname</button>
+<p *ngIf="auth.username">{{auth.username}}</p>
+<p *ngIf="auth.clientName">{{auth.clientName}}</p>
