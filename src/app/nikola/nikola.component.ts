@@ -4,6 +4,7 @@ import { CryptoModel } from 'src/models/cripto.model';
 
 import { CryptoPrice,cryptos } from 'src/models/crypto-price.model';
 import { BitServiceService } from '../bit-service.service';
+import { CommonComponent } from '../models/common/common.component';
 
 
 @Component({
@@ -11,7 +12,7 @@ import { BitServiceService } from '../bit-service.service';
   templateUrl: './nikola.component.html',
   styleUrls: ['./nikola.component.css']
 })
-export class NikolaComponent implements OnInit, AfterViewInit, AfterContentInit {
+export class NikolaComponent extends CommonComponent  implements OnInit, AfterViewInit, AfterContentInit {
   br = this.bitService.brNik;
 
 
@@ -19,6 +20,7 @@ export class NikolaComponent implements OnInit, AfterViewInit, AfterContentInit 
   data3:CryptoPrice[]=[];
   data2!: CryptoPrice[];
   constructor(private bitService: BitServiceService) {
+    super();
     // bitService.getBitCoinData().subscribe(d => {
     //   let br = 1;
     //   this.data2 = d.coins

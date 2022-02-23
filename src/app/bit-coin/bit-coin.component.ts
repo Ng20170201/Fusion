@@ -2,34 +2,36 @@ import { Component, OnInit } from '@angular/core';
 import { Subject, takeUntil, timer } from 'rxjs';
 import { CryptoPrice } from 'src/models/crypto-price.model';
 import { BitServiceService } from '../bit-service.service';
-import { Output, EventEmitter } from '@angular/core';
+
 import { AuthService } from '../auth/auth.service';
+import { CommonComponent } from '../models/common/common.component';
 
 @Component({
   selector: 'app-bit-coin',
   templateUrl: './bit-coin.component.html',
   styleUrls: ['./bit-coin.component.css']
 })
-export class BitCoinComponent implements OnInit {
+export class BitCoinComponent extends CommonComponent implements OnInit {
   press1 = false;
   press2 = true;
- 
-  cryptoPrices!: CryptoPrice[] | undefined;
-  ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  br=this.bitService.brBit;
-  constructor(private bitService: BitServiceService,public auth:AuthService) { }
-  
+  cryptoPrices!: CryptoPrice[] | undefined;
+
+  br = this.bitService.brBit;
+  constructor(private bitService: BitServiceService, public auth: AuthService) {
+    super()
+  }
+
   ngOnInit(): void {
 
   }
-  napisi(text:string | undefined){
-  
-    if(this.bitService.brBit!=undefined){
+  napisi(text: string | undefined) {
+
+    if (this.bitService.brBit != undefined) {
       this.bitService.brBit++;
-      this.br=this.bitService.brBit;
+      this.br = this.bitService.brBit;
     }
-   
+
   }
   getBitCoinData() {
     return this.bitService.getBitCoinData();
@@ -50,9 +52,6 @@ export class BitCoinComponent implements OnInit {
 
   }
 
-  ngOnDestroy() {
-    this.unsubscribeFromCall();
-  }
 
   unsubscribeFromCall(): void {
     this.ngUnsubscribe.next();
@@ -60,8 +59,8 @@ export class BitCoinComponent implements OnInit {
   }
 
 
-  nadjiUserClient():void{
+  nadjiUserClient(): void {
     this.auth.nadjiUserClient().subscribe();
-    
+
   }
 }

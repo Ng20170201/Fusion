@@ -5,6 +5,8 @@ import { map, Observable } from 'rxjs';
 import { ResponseModel } from 'src/models/response.model';
 import { User } from 'src/models/user.model';
 import { UserData } from 'src/models/UserData';
+import { CommonComponent } from '../models/common/common.component';
+import { TabelaComponent } from '../tabela/tabela.component';
 import { AuthInterceptor } from './auth.interceptor';
 
 @Injectable({
@@ -12,22 +14,20 @@ import { AuthInterceptor } from './auth.interceptor';
 })
 export class AuthService {
 
-  token: string | undefined;
-  username:string;
-  clientName:string;
-  nadjiUserClient(): Observable<void> {
-    
-    
-    
+  token: string;
+  username: string;
+  clientName: string;
+  common: CommonComponent;
 
+  nadjiUserClient(): Observable<User> {
 
     let url = "https://bcd-api.procampaign.com/auth/UserInfo";
-    
+
     return this.http.get<User>(url).pipe(
       map(d => {
-        this.username=d.Data.UserName;
-        this.clientName=d.Data.ClientName;
-
+        this.username = d.Data.UserName;
+        this.clientName = d.Data.ClientName;
+        return d;
       }
       )
     )
@@ -73,9 +73,17 @@ export class AuthService {
 
   }
   LogOut(): void {
-    localStorage.removeItem('token');
-    this.token = null;
-    this.router.navigate(['auth']);
+    this.common.canDeactivatePage().subscribe(d => {
+      if (!d) {
+        return;
+      }
+      localStorage.removeItem('token');
+      this.token = null;
+      this.router.navigate(['auth']);
+    })
   }
-
 }
+
+
+
+

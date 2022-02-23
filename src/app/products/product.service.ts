@@ -1,23 +1,26 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, IterableDiffers } from '@angular/core';
-import { forkJoin, merge, observable, Observable, of } from 'rxjs';
+import { forkJoin, merge, observable, Observable, of, Subject } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { dataSP } from 'src/models/dataSP';
 
 import { Product } from 'src/models/product.model';
 import { Shop } from 'src/models/shop.model';
+import { CommonComponent } from '../models/common/common.component';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProductService {
+export class ProductService  extends CommonComponent {
 
 
   shops: Shop[];
   products: Product[];
   allProducts: Product[] = [];
 
-
+  constructor(private http: HttpClient) {
+    super()
+   }
 
 
 
@@ -25,42 +28,42 @@ export class ProductService {
     return this.http.get<dataSP<Shop>>("https://bcd-api.procampaign.com/eCommerce/Shops").pipe(
       mergeMap(d => {
         this.shops = d.Data;
-        
-        if(this.shops[0].Id%2==0){
+
+        if (this.shops[0].Id % 2 == 0) {
           return this.getProducts(this.shops[0].Id).pipe(
-            map(dt=>{
+            map(dt => {
               return dt;
             }
-            
+
             ));
-         
+
         }
-        else{
-          return of(null);
+        else {
+          return of([]);
         }
-        
+
       })
 
     );
   }
 
 
-  getAllProduct(): Observable<Shop[]> {
-    return this.http.get<dataSP<Shop>>("https://bcd-api.procampaign.com/eCommerce/Shops").pipe(
-      mergeMap((d) => {
-        let observableBatch = new Array<Observable<void>>();
-        this.shops = d.Data;
+  
 
-        this.shops.forEach(shop => {
+  getAllProduct(): Observable<Shop[]> {
+    return this.getShops().pipe(
+      mergeMap((d) => {
+        let shops = d;
+        let observableBatch = new Array<Observable<void>>();
+
+        shops.forEach(shop => {
           let observable = this.getProducts(shop.Id).pipe(map(d => {
             shop.products = d;
-          }
-
-          ))
+          }));
           observableBatch.push(observable);
         });
         return forkJoin(observableBatch).pipe(map(d => {
-          return this.shops;
+          return shops;
         }
 
         ))
@@ -87,5 +90,5 @@ export class ProductService {
 
     );
   }
-  constructor(private http: HttpClient) { }
+  
 }

@@ -1,4 +1,8 @@
+
+
+
 export class CryptoPrice {
+  
     id!: string;
     number!:number;
     name!: string;

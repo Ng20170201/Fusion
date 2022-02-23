@@ -1,11 +1,8 @@
 import { Component } from '@angular/core';
-import { CryptoModel } from 'src/models/cripto.model';
 import { BitServiceService } from './bit-service.service';
 
-import { CryptoPrice } from 'src/models/crypto-price.model';
-import { BehaviorSubject, interval, timer } from 'rxjs';
-import { observeNotification } from 'rxjs/internal/Notification';
-import { AuthService } from './auth/auth.service';
+
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -16,9 +13,12 @@ import { AuthService } from './auth/auth.service';
 export class AppComponent {
   
   title = 'projectNikola';
-
+ 
   
-  constructor(private bitService: BitServiceService) {
+  constructor(private bitService: BitServiceService,translate: TranslateService) {
+    translate.addLangs(['sr', 'klingon']);
+    translate.setDefaultLang('sr');
+    translate.use('sr');
   }
  
  
